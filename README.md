@@ -1,6 +1,6 @@
 # BaoOngThay — Hệ thống Phát hiện Gian lận Báo cáo Tài chính Việt Nam
 
-Hệ thống phân tích và phát hiện gian lận trên Báo cáo Tài chính (BCTC) tiếng Việt, sử dụng dữ liệu công khai từ HOSE, HNX và các cơ quan Nhà nước. Toàn bộ quy trình **không sử dụng AI để sinh dữ liệu huấn luyện** — đảm bảo tính liêm chính học thuật và thực tiễn nghiên cứu.
+Hệ thống phân tích và phát hiện gian lận trên Báo cáo Tài chính (BCTC) tiếng Việt, sử dụng dữ liệu công khai từ Cổng Công bố thông tin Ủy ban Chứng khoán Nhà nước (https://congbothongtin.ssc.gov.vn/). Toàn bộ quy trình **không sử dụng AI để sinh dữ liệu huấn luyện** — đảm bảo tính liêm chính học thuật và thực tiễn nghiên cứu.
 
 ---
 
@@ -74,6 +74,14 @@ engine_explainability.py  Integrated Gradients / SHAP / LIME
 engine_drift.py           Drift monitoring khi dùng thực tế
 engine_tuning.py          Hyperparameter tuning bằng Optuna
 samples.jsonl             ⭐ Dataset chính (từ BCTC thật — không AI sinh)
+
+[Văn bản hướng dẫn / Tài liệu]
+README.md                 Giới thiệu tổng quan hệ thống
+HUONG_DAN_CHAY.md         Hướng dẫn chi tiết cài đặt và khởi chạy từ đầu
+AUDITBERT_CHI_TIET.md     Giải thích cấu trúc và cách AuditBERT hoạt động
+DATASET_HUONG_DAN.md      Giải thích quy trình làm dữ liệu không dùng AI
+GIAI_THICH_CODE.md        Sơ đồ luồng xử lý và cách code hoạt động
+Tap_Du_Lieu_Test_Kiem_Tra.csv  Tập dữ liệu dùng để giảng viên kiểm chứng (đề thi cuối kỳ)
 ```
 
 Checkpoint:
@@ -94,7 +102,7 @@ Dự án tuân thủ **tuyệt đối** nguyên tắc: không dùng AI (ChatGPT,
 
 | Tiêu chí | Trạng thái |
 |---|---|
-| Nguồn dữ liệu công khai (HOSE/HNX/Bộ Tài chính) | ✅ |
+| Nguồn dữ liệu công khai (Cổng thông tin SSC - congbothongtin.ssc.gov.vn) | ✅ |
 | Không OCR bằng AI (tắt Tesseract/pdf2image) | ✅ |
 | Đọc PDF bằng PyMuPDF (Text Layer vật lý) | ✅ |
 | Từ chối PDF scan tại API (HTTP 400) | ✅ |
@@ -103,7 +111,7 @@ Dự án tuân thủ **tuyệt đối** nguyên tắc: không dùng AI (ChatGPT,
 ### 4.2. Pipeline tạo Dataset
 
 ```
-1. Tải PDF BCTC thật (HOSE/HNX/cổng công bố Nhà nước)
+1. Tải PDF BCTC thật từ (https://congbothongtin.ssc.gov.vn/)
       ↓
 2. engine_document_io.py → PyMuPDF bóc chữ từ Text Layer
       ↓
@@ -275,7 +283,10 @@ POST /analyze-file?model=mfinbert    ← So sánh
 
 ## 10. Tài liệu liên quan
 
-- [GIAI_THICH_CODE.md](GIAI_THICH_CODE.md) — Giải thích chi tiết từng module
+- [HUONG_DAN_CHAY.md](HUONG_DAN_CHAY.md) — Cài đặt và thao tác chạy
+- [AUDITBERT_CHI_TIET.md](AUDITBERT_CHI_TIET.md) — Cấu trúc Feature Fusion của AuditBERT
+- [DATASET_HUONG_DAN.md](DATASET_HUONG_DAN.md) — Phương pháp xây dựng dữ liệu liêm chính
+- [GIAI_THICH_CODE.md](GIAI_THICH_CODE.md) — Giải thích cấu trúc code và sơ đồ luồng
 - [PhoBERT paper](https://aclanthology.org/2020.findings-emnlp.92/)
 - [MFinBERT (sonnv/MFinBERT)](https://huggingface.co/sonnv/MFinBERT)
 - [Focal Loss](https://arxiv.org/abs/1708.02002)

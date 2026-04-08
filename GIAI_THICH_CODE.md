@@ -41,7 +41,7 @@ Hệ thống giải quyết bài toán thực tế:
 ```mermaid
 flowchart TD
     subgraph "TẦNG 1 — THU THẬP DỮ LIỆU"
-        A["PDF BCTC thật\nHOSE / HNX / Nhà nước"]
+        A["PDF BCTC thật\nCổng SSC (congbothongtin.ssc.gov.vn)"]
         B["engine_document_io.py\nPyMuPDF — Không OCR"]
         C["engine_parser.py\nParser Regex Rule-based"]
         D["samples.jsonl\nDataset thật — Không AI"]
@@ -318,7 +318,7 @@ POST /analyze-file?model=auditbert (upload file.pdf)
 
 | Câu hỏi | Câu trả lời |
 |---|---|
-| "Dữ liệu lấy từ đâu?" | "BCTC công khai HOSE/HNX — engine_parser.py dùng PyMuPDF + Regex trích xuất, không AI" |
+| "Dữ liệu lấy từ đâu?" | "BCTC công khai từ Cổng SSC (https://congbothongtin.ssc.gov.vn/) — engine_parser.py dùng PyMuPDF + Regex trích xuất, không AI" |
 | "Tại sao không dùng ChatGPT sinh dữ liệu?" | "Số liệu tài chính AI sinh có thể sai — vi phạm tính liêm chính học thuật và gây drift mô hình" |
 | "AuditBERT khác PhoBERT ở đâu?" | "Thêm 6 financial features mới (financial_term_density, Benford's Law, VAS codes) vào Hybrid Head" |
 | "Sao không chạy 3 model song song?" | "Quá nặng RAM — Feature Fusion cho phép distill kiến thức 3 model vào 1 checkpoint" |

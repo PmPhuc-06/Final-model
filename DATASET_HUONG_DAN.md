@@ -32,9 +32,8 @@ Trong các hệ thống phát hiện gian lận tài chính, việc dùng AI (Ch
 
 | Nguồn | URL trực tiếp | Nội dung | Nhãn phù hợp |
 |---|---|---|---|
-| **HOSE** — Công bố thông tin | [`hsx.vn/Modules/Cms/Web/NewDetail`](https://hsx.vn/Modules/Cms/Web/NewDetail) | BCTC kiểm toán năm, quý toàn bộ công ty niêm yết HOSE | `label = 0` (BCTC bình thường) |
-| **HNX** — Công bố thông tin | [`hnx.vn/vi-vn/cong-bo-thong-tin`](https://hnx.vn/vi-vn/cong-bo-thong-tin.html) | BCTC niêm yết HNX/UPCoM | `label = 0` (BCTC bình thường) |
-| **UBCKNN/SSC** — Xử phạt | [`ssc.gov.vn/ubck/faces/oracle`](https://www.ssc.gov.vn) → mục *Xử phạt vi phạm hành chính* | Quyết định XPVPHC có tên công ty, mã vi phạm, năm | `label = 1` ✅ |
+| **UBCKNN / SSC** — Báo cáo & Công bố | [`congbothongtin.ssc.gov.vn`](https://congbothongtin.ssc.gov.vn/) | BCTC kiểm toán năm, quý toàn bộ công ty đại chúng | `label = 0` (BCTC bình thường) |
+| **UBCKNN / SSC** — Xử phạt | [`ssc.gov.vn`](https://www.ssc.gov.vn) → mục *Xử phạt vi phạm hành chính* | Quyết định XPVPHC có tên công ty, mã vi phạm, năm | `label = 1` ✅ |
 | **Công bố thông tin SSC** | [`congbothongtin.ssc.gov.vn`](http://congbothongtin.ssc.gov.vn) | Toàn bộ hồ sơ công bố của công ty đại chúng | Cả 2 nhãn |
 | **Kiểm toán Nhà nước** | [`sav.gov.vn/pages/bao-cao-kiem-toan`](https://sav.gov.vn) → Báo cáo kiểm toán | Báo cáo kiểm toán ngân sách / doanh nghiệp Nhà nước | `label = 1` nếu có kiến nghị |
 | **Bộ Tài chính** | [`mof.gov.vn`](https://www.mof.gov.vn) → Kế toán-Kiểm toán | Chuẩn mực VAS, thông tư kế toán | `label = 0` |
@@ -43,7 +42,7 @@ Trong các hệ thống phát hiện gian lận tài chính, việc dùng AI (Ch
 
 | Công cụ | URL | Hình thức | Chi phí |
 |---|---|---|---|
-| **vnstock** (Python) | [`github.com/thinh-vu/vnstock`](https://github.com/thinh-vu/vnstock) | Thư viện Python, tải dữ liệu tài chính HOSE/HNX tự động | **Miễn phí** |
+| **vnstock** (Python) | [`github.com/thinh-vu/vnstock`](https://github.com/thinh-vu/vnstock) | Thư viện Python, tải dữ liệu tài chính công chúng tự động | **Miễn phí** |
 | **Vietstock Finance** | [`finance.vietstock.vn`](https://finance.vietstock.vn) | Export Excel BCTC theo công ty/ngành | Một phần miễn phí |
 | **Vietdata** | [`vietdata.vn`](https://vietdata.vn) | Dashboard BCTC từ 2007, export CSV | Có phí |
 | **WiFeed/WiGroup** | [`wifeed.vn`](https://wifeed.vn) | API tài chính doanh nghiệp | Có phí / API key |
@@ -77,7 +76,7 @@ df_bs = stock_financial_report(symbol="FLC", report_type="balancesheet",
 | Louis Holdings | TGG | 2021 | Gian lận BCTC, thao túng cổ phiếu | SSC công bố 2022 |
 | Apec Group | APC | 2021 | Thao túng giá, thông tin sai lệch | SSC công bố 2022 |
 | Trung Nam | | 2022 | Sai phạm công bố thông tin BCTC | SSC QĐ xử phạt |
-| Nhiều CT bị hủy niêm yết | Nhiều | Hàng năm | Lỗ lũy kế ≥ 50% vốn hoặc âm vốn chủ | HOSE/HNX thông báo hủy |
+| Nhiều CT bị hủy niêm yết | Nhiều | Hàng năm | Lỗ lũy kế ≥ 50% vốn hoặc âm vốn chủ | Cập nhật truy xuất từ SSC |
 
 **Tra toàn bộ danh sách xử phạt:** `ssc.gov.vn` → Tin tức → Xử phạt vi phạm hành chính
 hoặc tìm trên CafeF: `cafef.vn` → Tìm kiếm "quyết định xử phạt [năm]"
@@ -89,8 +88,7 @@ hoặc tìm trên CafeF: `cafef.vn` → Tìm kiếm "quyết định xử phạt
 ### Bước 1 — Thu thập PDF BCTC
 
 ```
-Đến: hose.vn → Công ty → Báo cáo tài chính → Tải PDF
-Đến: hnx.vn → Tra cứu → Công bố thông tin → Lọc "Báo cáo tài chính"
+Đến: https://congbothongtin.ssc.gov.vn/ → Nhập tên công ty/Mã Ck → Lọc "Báo cáo tài chính" → Tải PDF gốc
 Đến: ssc.gov.vn → Văn bản pháp luật → Quyết định xử phạt → Tải PDF
 ```
 
@@ -208,7 +206,7 @@ Mỗi section được trích xuất riêng → ghép thành 1 mẫu văn bản 
 | Nhãn | Điều kiện | Bằng chứng cần có |
 |---|---|---|
 | `label = 1` (Gian lận) | Có quyết định xử phạt từ UBCKNN/Bộ TC **hoặc** kiểm toán viên từ chối/có ý kiến ngoại trừ | File PDF quyết định xử phạt |
-| `label = 1` (Gian lận) | Công ty bị huỷ niêm yết do lỗ lũy kế ≥ 50% vốn | Thông báo HOSE/HNX |
+| `label = 1` (Gian lận) | Công ty bị huỷ niêm yết do lỗ lũy kế ≥ 50% vốn | Thông báo từ Cổng thông tin SSC |
 | `label = 0` (Bình thường) | Kiểm toán viên đưa ra ý kiến chấp nhận toàn phần (Unqualified) | Báo cáo kiểm toán không có ngoại trừ |
 
 #### Quy trình gán nhãn thực tế
@@ -370,10 +368,12 @@ baseline_split_test.jsonl     # 10% mẫu
 
 ## 7. Luồng dữ liệu trực tiếp trong code
 
+```mermaid
+flowchart TD
+    A["PDF BCTC thật (Cổng SSC)"] --> B{"Tách Text\nPyMuPDF"}
 ```
-PDF BCTC thật (HOSE/HNX/SSC)
-       │
-       ▼
+
+```python
 engine_document_io.py
   └─ fitz.open(pdf) → page.get_text("layout")   ← PyMuPDF, không OCR
   └─ Từ chối nếu text < 20 ký tự (PDF scan)
@@ -405,9 +405,9 @@ auditbert_fraud_checkpoint.pt
 
 **Để đưa vào báo cáo học thuật:**
 
-> Tập dữ liệu huấn luyện được xây dựng từ N Báo cáo Tài chính đã được kiểm toán, thu thập
-> công khai từ Sở Giao dịch Chứng khoán TP.HCM (HOSE), Sở Giao dịch Chứng khoán Hà Nội (HNX)
-> và Ủy ban Chứng khoán Nhà nước (UBCKNN) trong giai đoạn 2018–2024. Nhãn gian lận (label=1)
+> **Liêm chính Dữ liệu:** Toàn bộ BCTC của dự án đều là dữ liệu thực tế
+> công khai từ Cổng Thông tin Điện tử Ủy ban Chứng khoán Nhà nước (https://congbothongtin.ssc.gov.vn/).
+> Chúng tôi tuyệt đối không sử dụng công cụ AI (ChatGPT, Claude) để sinh tự động giai đoạn 2018–2024. Nhãn gian lận (label=1)
 > được gán dựa trên quyết định xử phạt hành chính công khai của UBCKNN và thông báo hủy niêm
 > yết chính thức. Toàn bộ văn bản được trích xuất bằng PyMuPDF từ lớp Text Layer vật lý của file
 > PDF gốc — không qua bất kỳ công nghệ OCR hay mô hình AI sinh nào. Quy trình gán nhãn và
